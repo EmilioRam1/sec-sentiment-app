@@ -1,7 +1,7 @@
 # SEC Sentiment Analyzer
 
 🌐 **Demo en vivo:** https://emilioram1.github.io/sec-sentiment-app/
-<img width="2559" height="1354" alt="image" src="https://github.com/user-attachments/assets/f46a502c-27ad-4a8d-8c6c-f8476000e1a8" />
+<img width="1669" height="1305" alt="image" src="https://github.com/user-attachments/assets/3a4464b9-202c-476d-affd-18e9a6d995b7" />
 
 App de análisis de sentimiento para archivos de la SEC (10-K, 10-Q, 8-K), usando **Qwen2-0.5B-Instruct** localmente y **Transformers.js** en el navegador.
 
