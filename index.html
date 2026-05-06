@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEC Sentiment — Transformers.js</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #f3ece0;
+            --paper-deep: #ebe2d2;
+            --ink: #1a1612;
+            --ink-soft: #5b5147;
+            --accent: #b54a25;
+            --rule: #c8bca6;
+            --pos: #2d7a3e;
+            --neg: #a02020;
+            --neu: #5b5147;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Fraunces', Georgia, serif;
+            background: var(--paper);
+            color: var(--ink);
+            min-height: 100vh;
+            padding: 3rem 1.5rem 4rem;
+            background-image:
+                radial-gradient(circle at 15% 10%, rgba(181,74,37,.04) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(181,74,37,.03) 0%, transparent 40%);
+        }
+
+        .container { max-width: 780px; margin: 0 auto; }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .25em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-weight: 300;
+            font-size: clamp(2.8rem, 7vw, 5rem);
+            line-height: .95;
+            letter-spacing: -.03em;
+            font-variation-settings: "opsz" 144;
+        }
+
+        h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
+
+        .subtitle { font-size: 1rem; color: var(--ink-soft); margin-top: .9rem; font-style: italic; }
+
+        .model-status {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            text-align: center;
+            padding: .65rem 1rem;
+            margin-bottom: 1.75rem;
+            border-radius: 4px;
+            letter-spacing: .1em;
+            transition: opacity .4s;
+        }
+
+        .model-status.loading { background: rgba(181,74,37,.07); color: var(--accent); border: 1px solid rgba(181,74,37,.2); }
+        .model-status.ready   { background: rgba(40,120,60,.06);  color: #2d7a3e;        border: 1px solid rgba(40,120,60,.2); }
+        .model-status.err     { background: rgba(160,32,32,.06);  color: #a02020;        border: 1px solid rgba(160,32,32,.2); }
+        .model-status.hidden  { display: none; }
+
+        .upload-zone {
+            border: 1px dashed var(--rule);
+            border-radius: 4px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all .2s;
+            margin-bottom: 1rem;
+            background: var(--paper-deep);
+        }
+
+        .upload-zone:hover, .upload-zone.drag-over {
+            border-color: var(--accent);
+            background: rgba(181,74,37,.04);
+        }
+
+        .upload-zone input[type="file"] { display: none; }
+
+        .upload-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .72rem;
+            text-transform: uppercase;
+            letter-spacing: .2em;
+            color: var(--ink-soft);
+            cursor: pointer;
+        }
+
+        .upload-label span { color: var(--accent); text-decoration: underline; }
+
+        .file-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .72rem;
+            color: var(--accent);
+            margin-top: .5rem;
+        }
+
+        .divider {
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .68rem;
+            color: var(--rule);
+            letter-spacing: .15em;
+            margin: .9rem 0;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .82rem;
+            line-height: 1.55;
+            padding: 1rem;
+            background: var(--paper-deep);
+            border: 1px solid var(--rule);
+            border-radius: 4px;
+            color: var(--ink);
+            outline: none;
+            resize: vertical;
+        }
+
+        textarea::placeholder { color: var(--ink-soft); opacity: .55; }
+
+        .char-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: .4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .char-count { font-family: 'JetBrains Mono', monospace; font-size: .65rem; color: var(--ink-soft); letter-spacing: .08em; }
+        .char-count.warn { color: var(--accent); }
+        .char-note { font-family: 'JetBrains Mono', monospace; font-size: .62rem; color: var(--rule); letter-spacing: .05em; }
+
+        .actions { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: .15em;
+            padding: .85rem 2rem;
+            border: none;
+            cursor: pointer;
+            transition: all .2s;
+            border-radius: 2px;
+        }
+
+        .btn-primary { background: var(--ink); color: var(--paper); }
+        .btn-primary:hover:not(:disabled) { background: var(--accent); }
+        .btn-primary:disabled { opacity: .45; cursor: not-allowed; }
+        .btn-ghost { background: transparent; color: var(--ink-soft); border: 1px solid var(--rule); }
+        .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
+
+        .result-card {
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--rule);
+        }
+
+        .result-card.positive { border-left: 4px solid var(--pos); }
+        .result-card.negative { border-left: 4px solid var(--neg); }
+        .result-card.neutral  { border-left: 4px solid var(--neu); }
+
+        .result-header {
+            padding: 1.25rem 1.5rem .75rem;
+            background: var(--paper-deep);
+            border-bottom: 1px solid var(--rule);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .result-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .25em;
+            color: var(--ink-soft);
+        }
+
+        .result-sentiment {
+            font-weight: 600;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            line-height: 1;
+            font-variation-settings: "opsz" 144;
+        }
+
+        .result-card.positive .result-sentiment { color: var(--pos); }
+        .result-card.negative .result-sentiment { color: var(--neg); }
+        .result-card.neutral  .result-sentiment { color: var(--neu); }
+
+        .result-icon { font-size: 1.4rem; }
+
+        .result-body { padding: 1.25rem 1.5rem 1.5rem; }
+
+        .confidence-bar {
+            height: 4px;
+            border-radius: 2px;
+            background: var(--rule);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .confidence-fill { height: 100%; border-radius: 2px; transition: width .6s ease; }
+        .result-card.positive .confidence-fill { background: var(--pos); }
+        .result-card.negative .confidence-fill { background: var(--neg); }
+        .result-card.neutral  .confidence-fill { background: var(--neu); }
+
+        .confidence-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            color: var(--ink-soft);
+            margin-bottom: 1rem;
+            letter-spacing: .08em;
+        }
+
+        .result-meta { font-family: 'JetBrains Mono', monospace; font-size: .62rem; color: var(--rule); letter-spacing: .08em; }
+
+        .analyzing-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .72rem;
+            text-transform: uppercase;
+            letter-spacing: .2em;
+            color: var(--accent);
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        footer {
+            margin-top: 3.5rem;
+            padding-top: 1.75rem;
+            border-top: 1px solid var(--rule);
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .67rem;
+            color: var(--ink-soft);
+            letter-spacing: .1em;
+            line-height: 1.8;
+        }
+
+        footer .model { color: var(--accent); }
+
+        [hidden] { display: none !important; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <header>
+        <div class="eyebrow">CD3002C.601 · Modelos de IA para Datos No Estructurados</div>
+        <h1>sec <em>sentiment</em></h1>
+        <div class="subtitle">análisis de sentimiento para reportes de la SEC</div>
+    </header>
+
+    <div id="modelStatus" class="model-status loading">
+        cargando modelo en el navegador — primera vez puede tardar ~20s
+    </div>
+
+    <div class="upload-zone" id="dropzone">
+        <input type="file" id="fileInput" accept=".html,.htm,.txt">
+        <label class="upload-label" for="fileInput">
+            arrastra un archivo o <span>haz clic para seleccionar</span><br>
+            <small style="opacity:.7">formatos: .html · .htm · .txt</small>
+        </label>
+        <div class="file-name" id="fileName" hidden></div>
+    </div>
+
+    <div class="divider">— o pega el texto directamente —</div>
+
+    <textarea id="textInput" placeholder="Pega aquí el texto del archivo SEC (10-K, 10-Q, 8-K…)"></textarea>
+
+    <div class="char-bar">
+        <div class="char-count" id="charCount">0 caracteres</div>
+        <div class="char-note">el modelo analiza los primeros 512 tokens</div>
+    </div>
+
+    <div class="actions">
+        <button class="btn btn-ghost" id="clearBtn">Limpiar</button>
+        <button class="btn btn-primary" id="analyzeBtn" disabled>Analizar →</button>
+    </div>
+
+    <div id="analyzing" hidden>
+        <div class="analyzing-text">analizando<span id="dots"></span></div>
+    </div>
+
+    <div class="result-card" id="resultCard" hidden>
+        <div class="result-header">
+            <div>
+                <div class="result-label">sentimiento detectado</div>
+                <div class="result-sentiment" id="resultSentiment"></div>
+            </div>
+            <div class="result-icon" id="resultIcon"></div>
+        </div>
+        <div class="result-body">
+            <div class="confidence-bar">
+                <div class="confidence-fill" id="confidenceFill" style="width:0%"></div>
+            </div>
+            <div class="confidence-label" id="confidenceLabel"></div>
+            <div class="result-meta" id="resultMeta"></div>
+        </div>
+    </div>
+
+    <footer>
+        modelo: <span class="model">distilbert-base-uncased · Transformers.js</span> · corriendo en el navegador<br>
+        versión local usa <span class="model">Qwen/Qwen2-0.5B-Instruct</span> · sin servidor
+    </footer>
+
+</div>
+
+<script type="module">
+    import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.4.0';
+
+    const statusEl   = document.getElementById('modelStatus');
+    const dropzone   = document.getElementById('dropzone');
+    const fileInput  = document.getElementById('fileInput');
+    const fileName   = document.getElementById('fileName');
+    const textInput  = document.getElementById('textInput');
+    const charCount  = document.getElementById('charCount');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const clearBtn   = document.getElementById('clearBtn');
+    const analyzing  = document.getElementById('analyzing');
+    const resultCard = document.getElementById('resultCard');
+
+    const LABELS = {
+        POSITIVE: { es: 'Positivo', icon: '▲', cls: 'positive' },
+        NEGATIVE: { es: 'Negativo', icon: '▼', cls: 'negative' },
+        NEUTRAL:  { es: 'Neutral',  icon: '◆', cls: 'neutral'  },
+    };
+
+    let classifier = null;
+
+    (async () => {
+        try {
+            classifier = await pipeline(
+                'text-classification',
+                'Xenova/distilbert-base-uncased-finetuned-sst-2-english'
+            );
+            statusEl.textContent = 'modelo listo ✓';
+            statusEl.className = 'model-status ready';
+            analyzeBtn.disabled = false;
+            setTimeout(() => { statusEl.className = 'model-status hidden'; }, 2500);
+        } catch (e) {
+            statusEl.textContent = 'error cargando modelo: ' + e.message;
+            statusEl.className = 'model-status err';
+        }
+    })();
+
+    // Char count
+    textInput.addEventListener('input', updateCount);
+    function updateCount() {
+        const n = textInput.value.length;
+        charCount.textContent = n.toLocaleString() + ' caracteres';
+        charCount.className = 'char-count' + (n > 5000 ? ' warn' : '');
+    }
+
+    // Drag & drop / file input
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+    dropzone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropzone.classList.remove('drag-over');
+        const f = e.dataTransfer.files[0];
+        if (f) readFile(f);
+    });
+    fileInput.addEventListener('change', () => { if (fileInput.files[0]) readFile(fileInput.files[0]); });
+
+    function readFile(file) {
+        fileName.textContent = file.name;
+        fileName.hidden = false;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            let text = ev.target.result;
+            if (file.name.match(/\.html?$/i)) {
+                const doc = new DOMParser().parseFromString(text, 'text/html');
+                ['script','style'].forEach(t => doc.querySelectorAll(t).forEach(el => el.remove()));
+                text = doc.body.innerText.replace(/\s{2,}/g, ' ').trim();
+            }
+            textInput.value = text.slice(0, 10000);
+            updateCount();
+        };
+        reader.readAsText(file);
+    }
+
+    // Clear
+    clearBtn.addEventListener('click', () => {
+        textInput.value = '';
+        fileName.hidden = true;
+        fileInput.value = '';
+        resultCard.hidden = true;
+        analyzing.hidden = true;
+        updateCount();
+    });
+
+    // Analyze
+    analyzeBtn.addEventListener('click', async () => {
+        const text = textInput.value.trim();
+        if (!text || !classifier) return;
+
+        analyzeBtn.disabled = true;
+        resultCard.hidden = true;
+        analyzing.hidden = false;
+        startDots();
+
+        try {
+            const [res] = await classifier(text, { truncation: true, max_length: 512 });
+            stopDots();
+            analyzing.hidden = true;
+
+            // Interpret score: if score < 0.65 → Neutral
+            let rawLabel = res.label;   // 'POSITIVE' | 'NEGATIVE'
+            let score    = res.score;
+            let label = rawLabel;
+            if (score < 0.65) label = 'NEUTRAL';
+
+            showResult(label, score, text.length);
+        } catch (e) {
+            stopDots();
+            analyzing.hidden = true;
+            alert('Error: ' + e.message);
+        } finally {
+            analyzeBtn.disabled = false;
+        }
+    });
+
+    function showResult(label, score, charLen) {
+        const info = LABELS[label] || LABELS.NEUTRAL;
+        resultCard.className = 'result-card ' + info.cls;
+        document.getElementById('resultSentiment').textContent = info.es;
+        document.getElementById('resultIcon').textContent = info.icon;
+        document.getElementById('confidenceFill').style.width = (score * 100).toFixed(1) + '%';
+        document.getElementById('confidenceLabel').textContent =
+            'confianza: ' + (score * 100).toFixed(1) + '%';
+        document.getElementById('resultMeta').textContent =
+            'analizado: ' + Math.min(charLen, 5000).toLocaleString() +
+            ' caracteres · distilbert-base-uncased (browser) · ' +
+            'versión local usa Qwen2-0.5B-Instruct';
+        resultCard.hidden = false;
+    }
+
+    let dotsInterval;
+    function startDots() {
+        let n = 0;
+        const el = document.getElementById('dots');
+        dotsInterval = setInterval(() => { el.textContent = '.'.repeat((n++ % 3) + 1); }, 400);
+    }
+    function stopDots() {
+        clearInterval(dotsInterval);
+        document.getElementById('dots').textContent = '';
+    }
+</script>
+</body>
+</html>
