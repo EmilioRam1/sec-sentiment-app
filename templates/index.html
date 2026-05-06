@@ -19,9 +19,7 @@
             --neg: #a02020;
             --neu: #5b5147;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         body {
             font-family: 'Fraunces', Georgia, serif;
             background: var(--paper);
@@ -32,16 +30,13 @@
                 radial-gradient(circle at 15% 10%, rgba(181,74,37,.04) 0%, transparent 40%),
                 radial-gradient(circle at 85% 80%, rgba(181,74,37,.03) 0%, transparent 40%);
         }
-
-        .container { max-width: 780px; margin: 0 auto; }
-
+        .container { max-width: 800px; margin: 0 auto; }
         header {
             text-align: center;
             margin-bottom: 2.5rem;
             padding-bottom: 2rem;
             border-bottom: 1px solid var(--rule);
         }
-
         .eyebrow {
             font-family: 'JetBrains Mono', monospace;
             font-size: .7rem;
@@ -50,7 +45,6 @@
             color: var(--accent);
             margin-bottom: 1rem;
         }
-
         h1 {
             font-weight: 300;
             font-size: clamp(2.8rem, 7vw, 5rem);
@@ -58,47 +52,83 @@
             letter-spacing: -.03em;
             font-variation-settings: "opsz" 144;
         }
-
         h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
-
         .subtitle { font-size: 1rem; color: var(--ink-soft); margin-top: .9rem; font-style: italic; }
 
-        /* Upload zone */
+        /* Upload */
         .upload-zone {
             border: 1px dashed var(--rule);
             border-radius: 4px;
-            padding: 1.5rem 1.5rem;
+            padding: 1.4rem;
             text-align: center;
             cursor: pointer;
             transition: all .2s;
-            margin-bottom: 1rem;
             background: var(--paper-deep);
+            margin-bottom: 1rem;
         }
-
-        .upload-zone:hover, .upload-zone.drag-over {
-            border-color: var(--accent);
-            background: rgba(181,74,37,.04);
-        }
-
+        .upload-zone:hover, .upload-zone.drag-over { border-color: var(--accent); background: rgba(181,74,37,.04); }
         .upload-zone input[type="file"] { display: none; }
-
         .upload-label {
             font-family: 'JetBrains Mono', monospace;
             font-size: .72rem;
             text-transform: uppercase;
-            letter-spacing: .2em;
+            letter-spacing: .18em;
             color: var(--ink-soft);
             cursor: pointer;
         }
-
         .upload-label span { color: var(--accent); text-decoration: underline; }
+        .file-name { font-family: 'JetBrains Mono', monospace; font-size: .72rem; color: var(--accent); margin-top: .45rem; }
 
-        .file-name {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: .72rem;
-            color: var(--accent);
-            margin-top: .5rem;
+        /* Sections panel */
+        .sections-panel {
+            background: var(--paper-deep);
+            border: 1px solid var(--rule);
+            border-radius: 4px;
+            padding: 1rem 1.25rem 1.25rem;
+            margin-bottom: 1.25rem;
         }
+        .panel-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .67rem;
+            text-transform: uppercase;
+            letter-spacing: .2em;
+            color: var(--ink-soft);
+            margin-bottom: .75rem;
+        }
+        .sections-chips { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: .9rem; }
+        .section-chip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .68rem;
+            background: var(--paper);
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            padding: .35rem .85rem;
+            cursor: pointer;
+            transition: all .18s;
+            color: var(--ink-soft);
+            display: flex;
+            align-items: center;
+            gap: .35rem;
+        }
+        .section-chip:hover { border-color: var(--accent); color: var(--accent); }
+        .section-chip.active { border-color: var(--accent); background: rgba(181,74,37,.08); color: var(--accent); font-weight: 500; }
+        .chip-key { font-weight: 500; }
+        .chip-sep { opacity: .4; }
+        .analyze-all-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .68rem;
+            text-transform: uppercase;
+            letter-spacing: .15em;
+            background: transparent;
+            border: 1px solid var(--ink-soft);
+            color: var(--ink-soft);
+            padding: .45rem 1.1rem;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all .18s;
+        }
+        .analyze-all-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+        .analyze-all-btn:disabled { opacity: .4; cursor: not-allowed; }
 
         .divider {
             text-align: center;
@@ -108,12 +138,11 @@
             letter-spacing: .15em;
             margin: .9rem 0;
         }
-
         textarea {
             width: 100%;
-            min-height: 200px;
+            min-height: 180px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: .82rem;
+            font-size: .8rem;
             line-height: 1.55;
             padding: 1rem;
             background: var(--paper-deep);
@@ -123,41 +152,20 @@
             outline: none;
             resize: vertical;
         }
-
         textarea::placeholder { color: var(--ink-soft); opacity: .55; }
-
         .char-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-top: .4rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.4rem;
         }
-
-        .char-count {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: .65rem;
-            color: var(--ink-soft);
-            letter-spacing: .08em;
-        }
-
+        .char-count { font-family: 'JetBrains Mono', monospace; font-size: .64rem; color: var(--ink-soft); letter-spacing: .08em; }
         .char-count.warn { color: var(--accent); }
+        .char-note { font-family: 'JetBrains Mono', monospace; font-size: .62rem; color: var(--rule); }
 
-        .char-note {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: .62rem;
-            color: var(--rule);
-            letter-spacing: .05em;
-        }
-
-        .actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
+        /* Actions */
+        .actions { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 2rem; }
         .btn {
             font-family: 'JetBrains Mono', monospace;
             font-size: .78rem;
@@ -169,74 +177,52 @@
             transition: all .2s;
             border-radius: 2px;
         }
-
         .btn-primary { background: var(--ink); color: var(--paper); }
         .btn-primary:hover:not(:disabled) { background: var(--accent); }
-        .btn-primary:disabled { opacity: .45; cursor: not-allowed; }
+        .btn-primary:disabled { opacity: .4; cursor: not-allowed; }
         .btn-ghost { background: transparent; color: var(--ink-soft); border: 1px solid var(--rule); }
         .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
 
-        /* Result card */
+        /* Current result */
         .result-card {
             border-radius: 4px;
             overflow: hidden;
             border: 1px solid var(--rule);
+            margin-bottom: 1.5rem;
         }
-
         .result-card.positive { border-left: 4px solid var(--pos); }
         .result-card.negative { border-left: 4px solid var(--neg); }
         .result-card.neutral  { border-left: 4px solid var(--neu); }
-
         .result-header {
-            padding: 1.25rem 1.5rem .75rem;
+            padding: 1.1rem 1.4rem .7rem;
             background: var(--paper-deep);
             border-bottom: 1px solid var(--rule);
             display: flex;
-            align-items: center;
-            gap: 1rem;
+            justify-content: space-between;
+            align-items: flex-start;
         }
-
-        .result-icon { font-size: 1.4rem; }
-
-        .result-label {
+        .result-section-tag {
             font-family: 'JetBrains Mono', monospace;
-            font-size: .7rem;
+            font-size: .62rem;
             text-transform: uppercase;
-            letter-spacing: .25em;
+            letter-spacing: .18em;
             color: var(--ink-soft);
+            margin-bottom: .3rem;
         }
-
         .result-sentiment {
             font-weight: 600;
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-size: clamp(1.7rem, 4vw, 2.6rem);
             line-height: 1;
             font-variation-settings: "opsz" 144;
         }
-
         .result-card.positive .result-sentiment { color: var(--pos); }
         .result-card.negative .result-sentiment { color: var(--neg); }
         .result-card.neutral  .result-sentiment { color: var(--neu); }
+        .result-icon { font-size: 1.5rem; margin-top: .4rem; }
+        .result-body { padding: 1.1rem 1.4rem 1.4rem; }
+        .result-explanation { font-size: 1rem; line-height: 1.55; color: var(--ink); font-style: italic; }
+        .result-meta { margin-top: .75rem; font-family: 'JetBrains Mono', monospace; font-size: .61rem; color: var(--rule); }
 
-        .result-body {
-            padding: 1.25rem 1.5rem 1.5rem;
-        }
-
-        .result-explanation {
-            font-size: 1.05rem;
-            line-height: 1.55;
-            color: var(--ink);
-            font-style: italic;
-        }
-
-        .result-meta {
-            margin-top: .9rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: .62rem;
-            color: var(--rule);
-            letter-spacing: .08em;
-        }
-
-        /* Analyzing state */
         .analyzing-text {
             font-family: 'JetBrains Mono', monospace;
             font-size: .72rem;
@@ -247,8 +233,58 @@
             padding: 1.5rem;
         }
 
+        /* History */
+        .history-panel { margin-bottom: 2rem; }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: .75rem;
+        }
+        .history-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .67rem;
+            text-transform: uppercase;
+            letter-spacing: .2em;
+            color: var(--ink-soft);
+        }
+        .clear-history-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            background: transparent;
+            border: none;
+            color: var(--rule);
+            cursor: pointer;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+        .clear-history-btn:hover { color: var(--accent); }
+        .history-list { display: flex; flex-direction: column; gap: .5rem; }
+        .history-item {
+            display: grid;
+            grid-template-columns: 6rem 7rem 1fr;
+            align-items: center;
+            gap: .75rem;
+            padding: .7rem 1rem;
+            border-radius: 4px;
+            border: 1px solid var(--rule);
+            background: var(--paper-deep);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+        }
+        @media (max-width: 560px) {
+            .history-item { grid-template-columns: 1fr 1fr; }
+            .history-expl { display: none; }
+        }
+        .history-key { color: var(--ink-soft); font-size: .65rem; letter-spacing: .05em; }
+        .history-badge { font-size: .7rem; font-weight: 500; display: flex; align-items: center; gap: .3rem; }
+        .history-item.positive .history-badge { color: var(--pos); }
+        .history-item.negative .history-badge { color: var(--neg); }
+        .history-item.neutral  .history-badge { color: var(--neu); }
+        .history-expl { color: var(--ink-soft); font-size: .65rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
         footer {
-            margin-top: 3.5rem;
+            margin-top: 3rem;
             padding-top: 1.75rem;
             border-top: 1px solid var(--rule);
             text-align: center;
@@ -258,9 +294,7 @@
             letter-spacing: .1em;
             line-height: 1.8;
         }
-
         footer .model { color: var(--accent); }
-
         [hidden] { display: none !important; }
     </style>
 </head>
@@ -270,26 +304,32 @@
     <header>
         <div class="eyebrow">CD3002C.601 · Modelos de IA para Datos No Estructurados</div>
         <h1>sec <em>sentiment</em></h1>
-        <div class="subtitle">análisis de sentimiento para reportes de la SEC</div>
+        <div class="subtitle">análisis de sentimiento por sección para reportes de la SEC</div>
     </header>
 
-    <!-- Upload zone -->
+    <!-- Upload -->
     <div class="upload-zone" id="dropzone">
         <input type="file" id="fileInput" accept=".html,.htm,.txt">
         <label class="upload-label" for="fileInput">
-            arrastra un archivo o <span>haz clic para seleccionar</span><br>
-            <small style="opacity:.7">formatos: .html · .htm · .txt</small>
+            arrastra un archivo SEC o <span>haz clic para seleccionar</span><br>
+            <small style="opacity:.65">formatos: .html · .htm · .txt &nbsp;|&nbsp; 10-K · 10-Q · 8-K</small>
         </label>
         <div class="file-name" id="fileName" hidden></div>
     </div>
 
+    <!-- Sections panel -->
+    <div class="sections-panel" id="sectionsPanel" hidden>
+        <div class="panel-label">secciones detectadas — clic para seleccionar</div>
+        <div class="sections-chips" id="sectionsChips"></div>
+        <button class="analyze-all-btn" id="analyzeAllBtn">Analizar todas las secciones →</button>
+    </div>
+
     <div class="divider">— o pega el texto directamente —</div>
 
-    <textarea id="textInput" placeholder="Pega aquí el texto del archivo SEC (10-K, 10-Q, 8-K…)"></textarea>
-
+    <textarea id="textInput" placeholder="Pega aquí el texto del archivo SEC (10-K, 10-Q, 8-K…) o selecciona una sección arriba"></textarea>
     <div class="char-bar">
         <div class="char-count" id="charCount">0 caracteres</div>
-        <div class="char-note">el modelo analiza los primeros 3 000 caracteres</div>
+        <div class="char-note">se analizan los primeros 3 000 caracteres</div>
     </div>
 
     <div class="actions">
@@ -297,15 +337,16 @@
         <button class="btn btn-primary" id="analyzeBtn">Analizar →</button>
     </div>
 
-    <!-- Result -->
+    <!-- Analyzing indicator -->
     <div id="analyzing" hidden>
-        <div class="analyzing-text">analizando<span id="dots"></span></div>
+        <div class="analyzing-text" id="analyzingText">analizando<span id="dots"></span></div>
     </div>
 
+    <!-- Current result -->
     <div class="result-card" id="resultCard" hidden>
         <div class="result-header">
             <div>
-                <div class="result-label">sentimiento detectado</div>
+                <div class="result-section-tag" id="resultSectionTag"></div>
                 <div class="result-sentiment" id="resultSentiment"></div>
             </div>
             <div class="result-icon" id="resultIcon"></div>
@@ -316,23 +357,37 @@
         </div>
     </div>
 
+    <!-- History -->
+    <div class="history-panel" id="historyPanel" hidden>
+        <div class="history-header">
+            <div class="history-title">historial de análisis</div>
+            <button class="clear-history-btn" id="clearHistoryBtn">borrar historial</button>
+        </div>
+        <div class="history-list" id="historyList"></div>
+    </div>
+
     <footer>
         modelo: <span class="model">Qwen/Qwen2-0.5B-Instruct</span> · corriendo localmente<br>
         vía 🤗 transformers + flask
     </footer>
 
 </div>
-
 <script>
-    const dropzone   = document.getElementById('dropzone');
-    const fileInput  = document.getElementById('fileInput');
-    const fileName   = document.getElementById('fileName');
-    const textInput  = document.getElementById('textInput');
-    const charCount  = document.getElementById('charCount');
-    const analyzeBtn = document.getElementById('analyzeBtn');
-    const clearBtn   = document.getElementById('clearBtn');
-    const analyzing  = document.getElementById('analyzing');
-    const resultCard = document.getElementById('resultCard');
+    const dropzone      = document.getElementById('dropzone');
+    const fileInput     = document.getElementById('fileInput');
+    const fileNameEl    = document.getElementById('fileName');
+    const textInput     = document.getElementById('textInput');
+    const charCount     = document.getElementById('charCount');
+    const analyzeBtn    = document.getElementById('analyzeBtn');
+    const clearBtn      = document.getElementById('clearBtn');
+    const analyzing     = document.getElementById('analyzing');
+    const analyzingText = document.getElementById('analyzingText');
+    const resultCard    = document.getElementById('resultCard');
+    const sectionsPanel = document.getElementById('sectionsPanel');
+    const sectionsChips = document.getElementById('sectionsChips');
+    const analyzeAllBtn = document.getElementById('analyzeAllBtn');
+    const historyPanel  = document.getElementById('historyPanel');
+    const historyList   = document.getElementById('historyList');
 
     const LABELS = {
         Positive: { es: 'Positivo', icon: '▲', cls: 'positive' },
@@ -340,7 +395,12 @@
         Neutral:  { es: 'Neutral',  icon: '◆', cls: 'neutral'  },
     };
 
-    // Char counter
+    let currentSection = 'Texto';
+    let detectedSections = [];
+    let analysisHistory = [];
+    let analyzingAll = false;
+
+    // ── Char count ──────────────────────────────────────────
     textInput.addEventListener('input', updateCount);
     function updateCount() {
         const n = textInput.value.length;
@@ -348,23 +408,19 @@
         charCount.className = 'char-count' + (n > 3000 ? ' warn' : '');
     }
 
-    // Drag & drop
+    // ── Drag & drop / file upload ────────────────────────────
     dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
     dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
     dropzone.addEventListener('drop', e => {
         e.preventDefault();
         dropzone.classList.remove('drag-over');
-        const f = e.dataTransfer.files[0];
-        if (f) uploadFile(f);
+        if (e.dataTransfer.files[0]) uploadFile(e.dataTransfer.files[0]);
     });
-
-    fileInput.addEventListener('change', () => {
-        if (fileInput.files[0]) uploadFile(fileInput.files[0]);
-    });
+    fileInput.addEventListener('change', () => { if (fileInput.files[0]) uploadFile(fileInput.files[0]); });
 
     async function uploadFile(file) {
-        fileName.textContent = file.name;
-        fileName.hidden = false;
+        fileNameEl.textContent = '↳ ' + file.name;
+        fileNameEl.hidden = false;
         const form = new FormData();
         form.append('file', file);
         try {
@@ -373,28 +429,102 @@
             if (data.error) { alert(data.error); return; }
             textInput.value = data.text;
             updateCount();
+            if (data.sections && data.sections.length) {
+                detectedSections = data.sections;
+                renderSections(data.sections);
+            }
         } catch (e) {
             alert('Error leyendo el archivo: ' + e.message);
         }
     }
 
-    // Clear
+    // ── Sections ─────────────────────────────────────────────
+    function renderSections(sections) {
+        sectionsChips.innerHTML = '';
+        sections.forEach(sec => {
+            const btn = document.createElement('button');
+            btn.className = 'section-chip';
+            btn.dataset.key = sec.key;
+            btn.innerHTML = `<span class="chip-key">${sec.key}</span><span class="chip-sep">·</span><span>${sec.title}</span>`;
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.section-chip').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                textInput.value = sec.text;
+                currentSection = sec.key + ' · ' + sec.title;
+                updateCount();
+                resultCard.hidden = true;
+            });
+            sectionsChips.appendChild(btn);
+        });
+        sectionsPanel.hidden = false;
+    }
+
+    // ── Analyze all ──────────────────────────────────────────
+    analyzeAllBtn.addEventListener('click', async () => {
+        if (!detectedSections.length) return;
+        analyzingAll = true;
+        analyzeAllBtn.disabled = true;
+        analyzeBtn.disabled = true;
+
+        for (const sec of detectedSections) {
+            currentSection = sec.key + ' · ' + sec.title;
+            analyzingText.innerHTML = `analizando ${sec.key}<span id="dots"></span>`;
+            analyzing.hidden = false;
+            resultCard.hidden = true;
+            startDots();
+
+            try {
+                const res = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: sec.text }),
+                });
+                const data = await res.json();
+                stopDots();
+                if (!data.error) {
+                    addToHistory(currentSection, data.label, data.explanation);
+                    showResult(data.label, data.explanation, sec.text.length);
+                }
+            } catch { stopDots(); }
+        }
+
+        analyzing.hidden = true;
+        analyzeBtn.disabled = false;
+        analyzeAllBtn.disabled = false;
+        analyzingAll = false;
+    });
+
+    // ── Clear ────────────────────────────────────────────────
     clearBtn.addEventListener('click', () => {
         textInput.value = '';
-        fileName.hidden = true;
+        fileNameEl.hidden = true;
         fileInput.value = '';
         resultCard.hidden = true;
         analyzing.hidden = true;
+        sectionsPanel.hidden = true;
+        detectedSections = [];
+        currentSection = 'Texto';
         updateCount();
     });
 
-    // Analyze
-    analyzeBtn.addEventListener('click', async () => {
+    document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+        analysisHistory = [];
+        renderHistory();
+    });
+
+    // ── Analyze ──────────────────────────────────────────────
+    analyzeBtn.addEventListener('click', () => runAnalysis());
+
+    textInput.addEventListener('keydown', e => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); runAnalysis(); }
+    });
+
+    async function runAnalysis() {
         const text = textInput.value.trim();
         if (!text) { textInput.focus(); return; }
-
         analyzeBtn.disabled = true;
         resultCard.hidden = true;
+        analyzingText.innerHTML = 'analizando<span id="dots"></span>';
         analyzing.hidden = false;
         startDots();
 
@@ -402,17 +532,14 @@
             const res = await fetch('/analyze', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text })
+                body: JSON.stringify({ text }),
             });
             const data = await res.json();
             stopDots();
             analyzing.hidden = true;
-
-            if (data.error) {
-                alert('Error: ' + data.error);
-                return;
-            }
+            if (data.error) { alert('Error: ' + data.error); return; }
             showResult(data.label, data.explanation, text.length);
+            addToHistory(currentSection, data.label, data.explanation);
         } catch (e) {
             stopDots();
             analyzing.hidden = true;
@@ -420,11 +547,13 @@
         } finally {
             analyzeBtn.disabled = false;
         }
-    });
+    }
 
+    // ── Render result ────────────────────────────────────────
     function showResult(label, explanation, charLen) {
         const info = LABELS[label] || LABELS.Neutral;
         resultCard.className = 'result-card ' + info.cls;
+        document.getElementById('resultSectionTag').textContent = currentSection;
         document.getElementById('resultSentiment').textContent = info.es;
         document.getElementById('resultIcon').textContent = info.icon;
         document.getElementById('resultExplanation').textContent = explanation;
@@ -433,16 +562,39 @@
         resultCard.hidden = false;
     }
 
-    // Dots animation
+    // ── History ──────────────────────────────────────────────
+    function addToHistory(section, label, explanation) {
+        analysisHistory.unshift({ section, label, explanation });
+        renderHistory();
+    }
+
+    function renderHistory() {
+        if (!analysisHistory.length) { historyPanel.hidden = true; return; }
+        historyPanel.hidden = false;
+        historyList.innerHTML = '';
+        analysisHistory.forEach(item => {
+            const info = LABELS[item.label] || LABELS.Neutral;
+            const div = document.createElement('div');
+            div.className = 'history-item ' + info.cls;
+            div.innerHTML = `
+                <div class="history-key">${item.section}</div>
+                <div class="history-badge">${info.icon} ${info.es}</div>
+                <div class="history-expl">${item.explanation}</div>`;
+            historyList.appendChild(div);
+        });
+    }
+
+    // ── Dots animation ───────────────────────────────────────
     let dotsInterval;
     function startDots() {
         let n = 0;
         const el = document.getElementById('dots');
-        dotsInterval = setInterval(() => { el.textContent = '.'.repeat((n++ % 3) + 1); }, 400);
+        if (el) dotsInterval = setInterval(() => { el.textContent = '.'.repeat((n++ % 3) + 1); }, 400);
     }
     function stopDots() {
         clearInterval(dotsInterval);
-        document.getElementById('dots').textContent = '';
+        const el = document.getElementById('dots');
+        if (el) el.textContent = '';
     }
 </script>
 </body>

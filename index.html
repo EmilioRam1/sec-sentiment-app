@@ -19,9 +19,7 @@
             --neg: #a02020;
             --neu: #5b5147;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         body {
             font-family: 'Fraunces', Georgia, serif;
             background: var(--paper);
@@ -32,16 +30,13 @@
                 radial-gradient(circle at 15% 10%, rgba(181,74,37,.04) 0%, transparent 40%),
                 radial-gradient(circle at 85% 80%, rgba(181,74,37,.03) 0%, transparent 40%);
         }
-
-        .container { max-width: 780px; margin: 0 auto; }
-
+        .container { max-width: 800px; margin: 0 auto; }
         header {
             text-align: center;
             margin-bottom: 2rem;
             padding-bottom: 2rem;
             border-bottom: 1px solid var(--rule);
         }
-
         .eyebrow {
             font-family: 'JetBrains Mono', monospace;
             font-size: .7rem;
@@ -50,7 +45,6 @@
             color: var(--accent);
             margin-bottom: 1rem;
         }
-
         h1 {
             font-weight: 300;
             font-size: clamp(2.8rem, 7vw, 5rem);
@@ -58,9 +52,7 @@
             letter-spacing: -.03em;
             font-variation-settings: "opsz" 144;
         }
-
         h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
-
         .subtitle { font-size: 1rem; color: var(--ink-soft); margin-top: .9rem; font-style: italic; }
 
         .model-status {
@@ -68,52 +60,87 @@
             font-size: .7rem;
             text-align: center;
             padding: .65rem 1rem;
-            margin-bottom: 1.75rem;
+            margin-bottom: 1.5rem;
             border-radius: 4px;
             letter-spacing: .1em;
-            transition: opacity .4s;
         }
-
         .model-status.loading { background: rgba(181,74,37,.07); color: var(--accent); border: 1px solid rgba(181,74,37,.2); }
-        .model-status.ready   { background: rgba(40,120,60,.06);  color: #2d7a3e;        border: 1px solid rgba(40,120,60,.2); }
-        .model-status.err     { background: rgba(160,32,32,.06);  color: #a02020;        border: 1px solid rgba(160,32,32,.2); }
+        .model-status.ready   { background: rgba(40,120,60,.06);  color: #2d7a3e;       border: 1px solid rgba(40,120,60,.2); }
+        .model-status.err     { background: rgba(160,32,32,.06);  color: #a02020;       border: 1px solid rgba(160,32,32,.2); }
         .model-status.hidden  { display: none; }
 
         .upload-zone {
             border: 1px dashed var(--rule);
             border-radius: 4px;
-            padding: 1.5rem;
+            padding: 1.4rem;
             text-align: center;
             cursor: pointer;
             transition: all .2s;
-            margin-bottom: 1rem;
             background: var(--paper-deep);
+            margin-bottom: 1rem;
         }
-
-        .upload-zone:hover, .upload-zone.drag-over {
-            border-color: var(--accent);
-            background: rgba(181,74,37,.04);
-        }
-
+        .upload-zone:hover, .upload-zone.drag-over { border-color: var(--accent); background: rgba(181,74,37,.04); }
         .upload-zone input[type="file"] { display: none; }
-
         .upload-label {
             font-family: 'JetBrains Mono', monospace;
             font-size: .72rem;
             text-transform: uppercase;
-            letter-spacing: .2em;
+            letter-spacing: .18em;
             color: var(--ink-soft);
             cursor: pointer;
         }
-
         .upload-label span { color: var(--accent); text-decoration: underline; }
+        .file-name { font-family: 'JetBrains Mono', monospace; font-size: .72rem; color: var(--accent); margin-top: .45rem; }
 
-        .file-name {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: .72rem;
-            color: var(--accent);
-            margin-top: .5rem;
+        .sections-panel {
+            background: var(--paper-deep);
+            border: 1px solid var(--rule);
+            border-radius: 4px;
+            padding: 1rem 1.25rem 1.25rem;
+            margin-bottom: 1.25rem;
         }
+        .panel-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .67rem;
+            text-transform: uppercase;
+            letter-spacing: .2em;
+            color: var(--ink-soft);
+            margin-bottom: .75rem;
+        }
+        .sections-chips { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: .9rem; }
+        .section-chip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .68rem;
+            background: var(--paper);
+            border: 1px solid var(--rule);
+            border-radius: 999px;
+            padding: .35rem .85rem;
+            cursor: pointer;
+            transition: all .18s;
+            color: var(--ink-soft);
+            display: flex;
+            align-items: center;
+            gap: .35rem;
+        }
+        .section-chip:hover { border-color: var(--accent); color: var(--accent); }
+        .section-chip.active { border-color: var(--accent); background: rgba(181,74,37,.08); color: var(--accent); font-weight: 500; }
+        .chip-key { font-weight: 500; }
+        .chip-sep { opacity: .4; }
+        .analyze-all-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .68rem;
+            text-transform: uppercase;
+            letter-spacing: .15em;
+            background: transparent;
+            border: 1px solid var(--ink-soft);
+            color: var(--ink-soft);
+            padding: .45rem 1.1rem;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all .18s;
+        }
+        .analyze-all-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+        .analyze-all-btn:disabled { opacity: .4; cursor: not-allowed; }
 
         .divider {
             text-align: center;
@@ -123,12 +150,11 @@
             letter-spacing: .15em;
             margin: .9rem 0;
         }
-
         textarea {
             width: 100%;
-            min-height: 200px;
+            min-height: 180px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: .82rem;
+            font-size: .8rem;
             line-height: 1.55;
             padding: 1rem;
             background: var(--paper-deep);
@@ -138,23 +164,19 @@
             outline: none;
             resize: vertical;
         }
-
         textarea::placeholder { color: var(--ink-soft); opacity: .55; }
-
         .char-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-top: .4rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.4rem;
         }
-
-        .char-count { font-family: 'JetBrains Mono', monospace; font-size: .65rem; color: var(--ink-soft); letter-spacing: .08em; }
+        .char-count { font-family: 'JetBrains Mono', monospace; font-size: .64rem; color: var(--ink-soft); letter-spacing: .08em; }
         .char-count.warn { color: var(--accent); }
-        .char-note { font-family: 'JetBrains Mono', monospace; font-size: .62rem; color: var(--rule); letter-spacing: .05em; }
+        .char-note { font-family: 'JetBrains Mono', monospace; font-size: .62rem; color: var(--rule); }
 
         .actions { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 2rem; }
-
         .btn {
             font-family: 'JetBrains Mono', monospace;
             font-size: .78rem;
@@ -166,10 +188,9 @@
             transition: all .2s;
             border-radius: 2px;
         }
-
         .btn-primary { background: var(--ink); color: var(--paper); }
         .btn-primary:hover:not(:disabled) { background: var(--accent); }
-        .btn-primary:disabled { opacity: .45; cursor: not-allowed; }
+        .btn-primary:disabled { opacity: .4; cursor: not-allowed; }
         .btn-ghost { background: transparent; color: var(--ink-soft); border: 1px solid var(--rule); }
         .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
 
@@ -177,66 +198,47 @@
             border-radius: 4px;
             overflow: hidden;
             border: 1px solid var(--rule);
+            margin-bottom: 1.5rem;
         }
-
         .result-card.positive { border-left: 4px solid var(--pos); }
         .result-card.negative { border-left: 4px solid var(--neg); }
         .result-card.neutral  { border-left: 4px solid var(--neu); }
-
         .result-header {
-            padding: 1.25rem 1.5rem .75rem;
+            padding: 1.1rem 1.4rem .7rem;
             background: var(--paper-deep);
             border-bottom: 1px solid var(--rule);
             display: flex;
-            align-items: center;
-            gap: 1rem;
+            justify-content: space-between;
+            align-items: flex-start;
         }
-
-        .result-label {
+        .result-section-tag {
             font-family: 'JetBrains Mono', monospace;
-            font-size: .7rem;
+            font-size: .62rem;
             text-transform: uppercase;
-            letter-spacing: .25em;
+            letter-spacing: .18em;
             color: var(--ink-soft);
+            margin-bottom: .3rem;
         }
-
         .result-sentiment {
             font-weight: 600;
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-size: clamp(1.7rem, 4vw, 2.6rem);
             line-height: 1;
             font-variation-settings: "opsz" 144;
         }
-
         .result-card.positive .result-sentiment { color: var(--pos); }
         .result-card.negative .result-sentiment { color: var(--neg); }
         .result-card.neutral  .result-sentiment { color: var(--neu); }
+        .result-icon { font-size: 1.5rem; margin-top: .4rem; }
+        .result-body { padding: 1.1rem 1.4rem 1.4rem; }
 
-        .result-icon { font-size: 1.4rem; }
-
-        .result-body { padding: 1.25rem 1.5rem 1.5rem; }
-
-        .confidence-bar {
-            height: 4px;
-            border-radius: 2px;
-            background: var(--rule);
-            margin-bottom: 1rem;
-            overflow: hidden;
-        }
-
-        .confidence-fill { height: 100%; border-radius: 2px; transition: width .6s ease; }
+        .confidence-bar { height: 4px; border-radius: 2px; background: var(--rule); margin-bottom: .75rem; overflow: hidden; }
+        .confidence-fill { height: 100%; border-radius: 2px; transition: width .5s ease; }
         .result-card.positive .confidence-fill { background: var(--pos); }
         .result-card.negative .confidence-fill { background: var(--neg); }
         .result-card.neutral  .confidence-fill { background: var(--neu); }
+        .confidence-label { font-family: 'JetBrains Mono', monospace; font-size: .62rem; color: var(--ink-soft); margin-bottom: .5rem; }
 
-        .confidence-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: .65rem;
-            color: var(--ink-soft);
-            margin-bottom: 1rem;
-            letter-spacing: .08em;
-        }
-
-        .result-meta { font-family: 'JetBrains Mono', monospace; font-size: .62rem; color: var(--rule); letter-spacing: .08em; }
+        .result-meta { font-family: 'JetBrains Mono', monospace; font-size: .61rem; color: var(--rule); }
 
         .analyzing-text {
             font-family: 'JetBrains Mono', monospace;
@@ -248,8 +250,52 @@
             padding: 1.5rem;
         }
 
+        .history-panel { margin-bottom: 2rem; }
+        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .75rem; }
+        .history-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .67rem;
+            text-transform: uppercase;
+            letter-spacing: .2em;
+            color: var(--ink-soft);
+        }
+        .clear-history-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            background: transparent;
+            border: none;
+            color: var(--rule);
+            cursor: pointer;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+        .clear-history-btn:hover { color: var(--accent); }
+        .history-list { display: flex; flex-direction: column; gap: .5rem; }
+        .history-item {
+            display: grid;
+            grid-template-columns: 6rem 7rem 1fr;
+            align-items: center;
+            gap: .75rem;
+            padding: .7rem 1rem;
+            border-radius: 4px;
+            border: 1px solid var(--rule);
+            background: var(--paper-deep);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+        }
+        @media (max-width: 560px) {
+            .history-item { grid-template-columns: 1fr 1fr; }
+            .history-expl { display: none; }
+        }
+        .history-key { color: var(--ink-soft); font-size: .65rem; letter-spacing: .05em; }
+        .history-badge { font-size: .7rem; font-weight: 500; display: flex; align-items: center; gap: .3rem; }
+        .history-item.positive .history-badge { color: var(--pos); }
+        .history-item.negative .history-badge { color: var(--neg); }
+        .history-item.neutral  .history-badge { color: var(--neu); }
+        .history-expl { color: var(--ink-soft); font-size: .65rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
         footer {
-            margin-top: 3.5rem;
+            margin-top: 3rem;
             padding-top: 1.75rem;
             border-top: 1px solid var(--rule);
             text-align: center;
@@ -259,9 +305,7 @@
             letter-spacing: .1em;
             line-height: 1.8;
         }
-
         footer .model { color: var(--accent); }
-
         [hidden] { display: none !important; }
     </style>
 </head>
@@ -271,7 +315,7 @@
     <header>
         <div class="eyebrow">CD3002C.601 · Modelos de IA para Datos No Estructurados</div>
         <h1>sec <em>sentiment</em></h1>
-        <div class="subtitle">análisis de sentimiento para reportes de la SEC</div>
+        <div class="subtitle">análisis de sentimiento por sección para reportes de la SEC</div>
     </header>
 
     <div id="modelStatus" class="model-status loading">
@@ -281,19 +325,24 @@
     <div class="upload-zone" id="dropzone">
         <input type="file" id="fileInput" accept=".html,.htm,.txt">
         <label class="upload-label" for="fileInput">
-            arrastra un archivo o <span>haz clic para seleccionar</span><br>
-            <small style="opacity:.7">formatos: .html · .htm · .txt</small>
+            arrastra un archivo SEC o <span>haz clic para seleccionar</span><br>
+            <small style="opacity:.65">formatos: .html · .htm · .txt &nbsp;|&nbsp; 10-K · 10-Q · 8-K</small>
         </label>
         <div class="file-name" id="fileName" hidden></div>
     </div>
 
+    <div class="sections-panel" id="sectionsPanel" hidden>
+        <div class="panel-label">secciones detectadas — clic para seleccionar</div>
+        <div class="sections-chips" id="sectionsChips"></div>
+        <button class="analyze-all-btn" id="analyzeAllBtn" disabled>Analizar todas las secciones →</button>
+    </div>
+
     <div class="divider">— o pega el texto directamente —</div>
 
-    <textarea id="textInput" placeholder="Pega aquí el texto del archivo SEC (10-K, 10-Q, 8-K…)"></textarea>
-
+    <textarea id="textInput" placeholder="Pega aquí el texto del archivo SEC (10-K, 10-Q, 8-K…) o selecciona una sección arriba"></textarea>
     <div class="char-bar">
         <div class="char-count" id="charCount">0 caracteres</div>
-        <div class="char-note">el modelo analiza los primeros 512 tokens</div>
+        <div class="char-note">se analizan los primeros 512 tokens</div>
     </div>
 
     <div class="actions">
@@ -302,13 +351,13 @@
     </div>
 
     <div id="analyzing" hidden>
-        <div class="analyzing-text">analizando<span id="dots"></span></div>
+        <div class="analyzing-text" id="analyzingText">analizando<span id="dots"></span></div>
     </div>
 
     <div class="result-card" id="resultCard" hidden>
         <div class="result-header">
             <div>
-                <div class="result-label">sentimiento detectado</div>
+                <div class="result-section-tag" id="resultSectionTag"></div>
                 <div class="result-sentiment" id="resultSentiment"></div>
             </div>
             <div class="result-icon" id="resultIcon"></div>
@@ -322,26 +371,39 @@
         </div>
     </div>
 
+    <div class="history-panel" id="historyPanel" hidden>
+        <div class="history-header">
+            <div class="history-title">historial de análisis</div>
+            <button class="clear-history-btn" id="clearHistoryBtn">borrar historial</button>
+        </div>
+        <div class="history-list" id="historyList"></div>
+    </div>
+
     <footer>
         modelo: <span class="model">distilbert-base-uncased · Transformers.js</span> · corriendo en el navegador<br>
         versión local usa <span class="model">Qwen/Qwen2-0.5B-Instruct</span> · sin servidor
     </footer>
 
 </div>
-
 <script type="module">
     import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.4.0';
 
-    const statusEl   = document.getElementById('modelStatus');
-    const dropzone   = document.getElementById('dropzone');
-    const fileInput  = document.getElementById('fileInput');
-    const fileName   = document.getElementById('fileName');
-    const textInput  = document.getElementById('textInput');
-    const charCount  = document.getElementById('charCount');
-    const analyzeBtn = document.getElementById('analyzeBtn');
-    const clearBtn   = document.getElementById('clearBtn');
-    const analyzing  = document.getElementById('analyzing');
-    const resultCard = document.getElementById('resultCard');
+    const statusEl      = document.getElementById('modelStatus');
+    const dropzone      = document.getElementById('dropzone');
+    const fileInput     = document.getElementById('fileInput');
+    const fileNameEl    = document.getElementById('fileName');
+    const textInput     = document.getElementById('textInput');
+    const charCount     = document.getElementById('charCount');
+    const analyzeBtn    = document.getElementById('analyzeBtn');
+    const clearBtn      = document.getElementById('clearBtn');
+    const analyzing     = document.getElementById('analyzing');
+    const analyzingText = document.getElementById('analyzingText');
+    const resultCard    = document.getElementById('resultCard');
+    const sectionsPanel = document.getElementById('sectionsPanel');
+    const sectionsChips = document.getElementById('sectionsChips');
+    const analyzeAllBtn = document.getElementById('analyzeAllBtn');
+    const historyPanel  = document.getElementById('historyPanel');
+    const historyList   = document.getElementById('historyList');
 
     const LABELS = {
         POSITIVE: { es: 'Positivo', icon: '▲', cls: 'positive' },
@@ -349,8 +411,21 @@
         NEUTRAL:  { es: 'Neutral',  icon: '◆', cls: 'neutral'  },
     };
 
-    let classifier = null;
+    const SECTION_NAMES = {
+        '1':'Business','1A':'Risk Factors','1B':'Unresolved Staff Comments',
+        '2':'Properties','3':'Legal Proceedings','4':'Mine Safety',
+        '5':'Market for Stock','7':"Management's Discussion",'7A':'Market Risk',
+        '8':'Financial Statements','9A':'Controls & Procedures',
+        '10':'Directors & Officers','11':'Executive Compensation',
+        '12':'Security Ownership','13':'Related Transactions','14':'Accountant Fees',
+    };
 
+    let classifier = null;
+    let currentSection = 'Texto';
+    let detectedSections = [];
+    let analysisHistory = [];
+
+    // ── Load model ───────────────────────────────────────────
     (async () => {
         try {
             classifier = await pipeline(
@@ -367,7 +442,7 @@
         }
     })();
 
-    // Char count
+    // ── Char count ───────────────────────────────────────────
     textInput.addEventListener('input', updateCount);
     function updateCount() {
         const n = textInput.value.length;
@@ -375,20 +450,19 @@
         charCount.className = 'char-count' + (n > 5000 ? ' warn' : '');
     }
 
-    // Drag & drop / file input
+    // ── File upload ──────────────────────────────────────────
     dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
     dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
     dropzone.addEventListener('drop', e => {
         e.preventDefault();
         dropzone.classList.remove('drag-over');
-        const f = e.dataTransfer.files[0];
-        if (f) readFile(f);
+        if (e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0]);
     });
     fileInput.addEventListener('change', () => { if (fileInput.files[0]) readFile(fileInput.files[0]); });
 
     function readFile(file) {
-        fileName.textContent = file.name;
-        fileName.hidden = false;
+        fileNameEl.textContent = '↳ ' + file.name;
+        fileNameEl.hidden = false;
         const reader = new FileReader();
         reader.onload = ev => {
             let text = ev.target.result;
@@ -397,44 +471,129 @@
                 ['script','style'].forEach(t => doc.querySelectorAll(t).forEach(el => el.remove()));
                 text = doc.body.innerText.replace(/\s{2,}/g, ' ').trim();
             }
-            textInput.value = text.slice(0, 10000);
+            text = text.slice(0, 50000);
+            textInput.value = text;
             updateCount();
+            const sections = detectSections(text);
+            if (sections.length) {
+                detectedSections = sections;
+                renderSections(sections);
+            }
         };
         reader.readAsText(file);
     }
 
-    // Clear
+    // ── Section detection (JS) ───────────────────────────────
+    function detectSections(text) {
+        const pattern = /(?:^|\n)((?:ITEM|Item)\s+(\d{1,2}[A-Za-z]?)\.?\s*[—–\-]?\s*([^\n]{0,80}))/gm;
+        const matches = [...text.matchAll(pattern)];
+        if (!matches.length) return [];
+
+        const sections = [];
+        for (let i = 0; i < matches.length; i++) {
+            const m = matches[i];
+            const itemNum = m[2].trim().toUpperCase();
+            const rawTitle = m[3].trim();
+            const start = m.index + m[0].length;
+            const end = i + 1 < matches.length ? matches[i+1].index : Math.min(start + 8000, text.length);
+            const body = text.slice(start, end).trim();
+            if (body.length < 50) continue;
+            const known = SECTION_NAMES[itemNum] || '';
+            const title = known || rawTitle.slice(0, 50) || `Item ${itemNum}`;
+            sections.push({ key: `Item ${itemNum}`, title, text: body });
+        }
+
+        const seen = new Set(), unique = [];
+        for (const s of sections) {
+            if (!seen.has(s.key)) { seen.add(s.key); unique.push(s); }
+        }
+        return unique.slice(0, 15);
+    }
+
+    // ── Render sections ──────────────────────────────────────
+    function renderSections(sections) {
+        sectionsChips.innerHTML = '';
+        sections.forEach(sec => {
+            const btn = document.createElement('button');
+            btn.className = 'section-chip';
+            btn.innerHTML = `<span class="chip-key">${sec.key}</span><span class="chip-sep">·</span><span>${sec.title}</span>`;
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.section-chip').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                textInput.value = sec.text;
+                currentSection = `${sec.key} · ${sec.title}`;
+                updateCount();
+                resultCard.hidden = true;
+            });
+            sectionsChips.appendChild(btn);
+        });
+        if (classifier) analyzeAllBtn.disabled = false;
+        sectionsPanel.hidden = false;
+    }
+
+    // ── Analyze all ──────────────────────────────────────────
+    analyzeAllBtn.addEventListener('click', async () => {
+        if (!detectedSections.length || !classifier) return;
+        analyzeAllBtn.disabled = true;
+        analyzeBtn.disabled = true;
+
+        for (const sec of detectedSections) {
+            currentSection = `${sec.key} · ${sec.title}`;
+            analyzingText.innerHTML = `analizando ${sec.key}<span id="dots"></span>`;
+            analyzing.hidden = false;
+            resultCard.hidden = true;
+            startDots();
+            try {
+                const label = await classify(sec.text);
+                stopDots();
+                addToHistory(currentSection, label.label, label.score);
+                showResult(label.label, label.score, sec.text.length);
+            } catch { stopDots(); }
+        }
+
+        analyzing.hidden = true;
+        analyzeBtn.disabled = false;
+        analyzeAllBtn.disabled = false;
+    });
+
+    // ── Clear ────────────────────────────────────────────────
     clearBtn.addEventListener('click', () => {
         textInput.value = '';
-        fileName.hidden = true;
+        fileNameEl.hidden = true;
         fileInput.value = '';
         resultCard.hidden = true;
         analyzing.hidden = true;
+        sectionsPanel.hidden = true;
+        detectedSections = [];
+        currentSection = 'Texto';
         updateCount();
     });
 
-    // Analyze
-    analyzeBtn.addEventListener('click', async () => {
+    document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+        analysisHistory = [];
+        renderHistory();
+    });
+
+    // ── Analyze ──────────────────────────────────────────────
+    analyzeBtn.addEventListener('click', () => runAnalysis());
+    textInput.addEventListener('keydown', e => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); runAnalysis(); }
+    });
+
+    async function runAnalysis() {
         const text = textInput.value.trim();
         if (!text || !classifier) return;
-
         analyzeBtn.disabled = true;
         resultCard.hidden = true;
+        analyzingText.innerHTML = 'analizando<span id="dots"></span>';
         analyzing.hidden = false;
         startDots();
-
         try {
-            const [res] = await classifier(text, { truncation: true, max_length: 512 });
+            const result = await classify(text);
             stopDots();
             analyzing.hidden = true;
-
-            // Interpret score: if score < 0.65 → Neutral
-            let rawLabel = res.label;   // 'POSITIVE' | 'NEGATIVE'
-            let score    = res.score;
-            let label = rawLabel;
-            if (score < 0.65) label = 'NEUTRAL';
-
-            showResult(label, score, text.length);
+            showResult(result.label, result.score, text.length);
+            addToHistory(currentSection, result.label, result.score);
         } catch (e) {
             stopDots();
             analyzing.hidden = true;
@@ -442,32 +601,62 @@
         } finally {
             analyzeBtn.disabled = false;
         }
-    });
+    }
 
+    async function classify(text) {
+        const [res] = await classifier(text, { truncation: true, max_length: 512 });
+        let label = res.label;
+        if (res.score < 0.65) label = 'NEUTRAL';
+        return { label, score: res.score };
+    }
+
+    // ── Render result ────────────────────────────────────────
     function showResult(label, score, charLen) {
         const info = LABELS[label] || LABELS.NEUTRAL;
         resultCard.className = 'result-card ' + info.cls;
+        document.getElementById('resultSectionTag').textContent = currentSection;
         document.getElementById('resultSentiment').textContent = info.es;
         document.getElementById('resultIcon').textContent = info.icon;
         document.getElementById('confidenceFill').style.width = (score * 100).toFixed(1) + '%';
-        document.getElementById('confidenceLabel').textContent =
-            'confianza: ' + (score * 100).toFixed(1) + '%';
+        document.getElementById('confidenceLabel').textContent = 'confianza: ' + (score * 100).toFixed(1) + '%';
         document.getElementById('resultMeta').textContent =
-            'analizado: ' + Math.min(charLen, 5000).toLocaleString() +
-            ' caracteres · distilbert-base-uncased (browser) · ' +
-            'versión local usa Qwen2-0.5B-Instruct';
+            'analizado: ' + Math.min(charLen, 512) + ' tokens · distilbert-base-uncased';
         resultCard.hidden = false;
     }
 
+    // ── History ──────────────────────────────────────────────
+    function addToHistory(section, label, score) {
+        analysisHistory.unshift({ section, label, score });
+        renderHistory();
+    }
+
+    function renderHistory() {
+        if (!analysisHistory.length) { historyPanel.hidden = true; return; }
+        historyPanel.hidden = false;
+        historyList.innerHTML = '';
+        analysisHistory.forEach(item => {
+            const info = LABELS[item.label] || LABELS.NEUTRAL;
+            const div = document.createElement('div');
+            div.className = 'history-item ' + info.cls;
+            div.innerHTML = `
+                <div class="history-key">${item.section}</div>
+                <div class="history-badge">${info.icon} ${info.es}</div>
+                <div class="history-expl">confianza: ${(item.score * 100).toFixed(1)}%</div>`;
+            historyList.appendChild(div);
+        });
+    }
+
+    // ── Dots ─────────────────────────────────────────────────
     let dotsInterval;
     function startDots() {
         let n = 0;
         const el = document.getElementById('dots');
-        dotsInterval = setInterval(() => { el.textContent = '.'.repeat((n++ % 3) + 1); }, 400);
+        if (el) dotsInterval = setInterval(() => { el.textContent = '.'.repeat((n++ % 3) + 1); }, 400);
     }
     function stopDots() {
         clearInterval(dotsInterval);
-        document.getElementById('dots').textContent = '';
+        const el = document.getElementById('dots');
+        if (el) el.textContent = '';
     }
 </script>
 </body>

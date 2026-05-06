@@ -6,6 +6,29 @@ from bs4 import BeautifulSoup
 app = Flask(__name__)
 MAX_CHARS = 3000
 
+SECTION_NAMES = {
+    '1': 'Business',
+    '1A': 'Risk Factors',
+    '1B': 'Unresolved Staff Comments',
+    '2': 'Properties',
+    '3': 'Legal Proceedings',
+    '4': 'Mine Safety',
+    '5': 'Market for Stock',
+    '6': 'Reserved',
+    '7': "Management's Discussion",
+    '7A': 'Market Risk',
+    '8': 'Financial Statements',
+    '9': 'Accounting Disagreements',
+    '9A': 'Controls & Procedures',
+    '9B': 'Other Information',
+    '10': 'Directors & Officers',
+    '11': 'Executive Compensation',
+    '12': 'Security Ownership',
+    '13': 'Related Transactions',
+    '14': 'Accountant Fees',
+    '15': 'Exhibits',
+}
+
 print("Cargando Qwen2-0.5B-Instruct…")
 tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2-0.5B-Instruct")
 model = AutoModelForCausalLM.from_pretrained(
@@ -26,14 +49,44 @@ def parse_file(file_obj):
     return raw.decode("utf-8", errors="ignore")
 
 
+def detect_sections(text):
+    pattern = re.compile(
+        r'(?:^|\n)((?:ITEM|Item)\s+(\d{1,2}[A-Za-z]?)\.?\s*[—–\-]?\s*([^\n]{0,80}))',
+        re.MULTILINE,
+    )
+    matches = list(pattern.finditer(text))
+    if not matches:
+        return []
+
+    sections = []
+    for i, m in enumerate(matches):
+        item_num = m.group(2).strip().upper()
+        raw_title = m.group(3).strip()
+        start = m.end()
+        end = matches[i + 1].start() if i + 1 < len(matches) else min(start + 8000, len(text))
+        body = text[start:end].strip()
+        if len(body) < 50:
+            continue
+        known = SECTION_NAMES.get(item_num, "")
+        title = known or raw_title[:50] or f"Item {item_num}"
+        sections.append({"key": f"Item {item_num}", "title": title, "text": body})
+
+    seen, unique = set(), []
+    for s in sections:
+        if s["key"] not in seen:
+            seen.add(s["key"])
+            unique.append(s)
+    return unique[:15]
+
+
 def run_sentiment(text):
     messages = [
         {
             "role": "system",
             "content": (
-                "You are a financial analyst. Analyze the sentiment of the SEC filing excerpt "
-                "provided by the user. Begin your reply with exactly one word — 'Positive', "
-                "'Negative', or 'Neutral' — followed by a single concise sentence explaining why."
+                "You are a financial analyst. Analyze the sentiment of the SEC filing excerpt. "
+                "Begin your reply with exactly one word — 'Positive', 'Negative', or 'Neutral' — "
+                "followed by a single concise sentence explaining why."
             ),
         },
         {"role": "user", "content": text[:MAX_CHARS]},
@@ -41,23 +94,13 @@ def run_sentiment(text):
     ids = tokenizer.apply_chat_template(
         messages, return_tensors="pt", add_generation_prompt=True
     ).to(model.device)
-
     with torch.no_grad():
         out = model.generate(
-            ids,
-            max_new_tokens=150,
-            do_sample=False,
-            pad_token_id=tokenizer.eos_token_id,
+            ids, max_new_tokens=150, do_sample=False, pad_token_id=tokenizer.eos_token_id
         )
     reply = tokenizer.decode(out[0][ids.shape[1]:], skip_special_tokens=True).strip()
-
     low = reply.lower()
-    if low.startswith("positive"):
-        label = "Positive"
-    elif low.startswith("negative"):
-        label = "Negative"
-    else:
-        label = "Neutral"
+    label = "Positive" if low.startswith("positive") else "Negative" if low.startswith("negative") else "Neutral"
     return label, reply
 
 
@@ -72,7 +115,9 @@ def extract():
     if not f or not f.filename:
         return jsonify({"error": "Sin archivo"}), 400
     try:
-        return jsonify({"text": parse_file(f)[:10000]})
+        text = parse_file(f)
+        sections = detect_sections(text)
+        return jsonify({"text": text[:10000], "sections": sections})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
