@@ -331,6 +331,9 @@
         <div class="char-count" id="charCount">0 caracteres</div>
         <div class="char-note">se analizan los primeros 3 000 caracteres</div>
     </div>
+    <div id="truncWarning" hidden style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--accent);background:rgba(181,74,37,.07);border:1px solid rgba(181,74,37,.25);border-radius:4px;padding:.6rem 1rem;margin-bottom:1.2rem;letter-spacing:.05em;">
+        ⚠ Solo se analizarán los primeros 3 000 de tus <span id="totalChars"></span> caracteres — considera usar las secciones detectadas para un resultado más preciso.
+    </div>
 
     <div class="actions">
         <button class="btn btn-ghost" id="clearBtn">Limpiar</button>
@@ -406,6 +409,13 @@
         const n = textInput.value.length;
         charCount.textContent = n.toLocaleString() + ' caracteres';
         charCount.className = 'char-count' + (n > 3000 ? ' warn' : '');
+        const warn = document.getElementById('truncWarning');
+        if (n > 3000) {
+            document.getElementById('totalChars').textContent = n.toLocaleString();
+            warn.hidden = false;
+        } else {
+            warn.hidden = true;
+        }
     }
 
     // ── Drag & drop / file upload ────────────────────────────
